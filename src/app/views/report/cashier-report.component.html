@@ -1,0 +1,56 @@
+<div class="animated fadeIn">
+  <!--HEADER FOR ACTION BUTTONS-->
+  <div class="row" [formGroup]="reportForm">
+    <div class="col-md-1">
+        <label>Periode</label>
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate" class="form-control form-control-sm" id="start-date">
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm" id="end-date">
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary" (click)="selectSession()"><i class="icon-doc"></i> Tampil</button>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h2>Laporan Omzet Kasir</h2>
+        </div>
+        <div class="card-body">              
+          <table class="table table-striped form-control-sm">
+            <thead>
+              <tr>
+                <th>Kasir</th>
+                <th>Login</th>
+                <th>Logout</th>
+                <th style="text-align: right">Nilai Cash</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of sessions">
+                <td>{{s.cashier.userName}}</td>
+                <td>{{s.loginTime | date : 'dd MMM yyyy HH:mm:ss'}}</td>
+                <td>{{s.logoutTime | date : 'dd MMM yyyy HH:mm:ss'}}</td>
+                <td align="right">{{s.cashAmount | number : ''}}</td>                
+              </tr>                  
+            </tbody>
+          </table>
+          <br/>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Total : {{total | number : ''}}</h4>
+            </div>
+            <!-- <div class="col-md-8">
+              <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage" (pageChanged)="pageChanged($event)" class="pagination-sm justify-content-end" [maxSize]="8"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            </div> -->
+        </div>
+      </div>
+    </div>
+  </div><!--/.col-->    
+</div>

@@ -1,0 +1,17 @@
+<div class="animated fadeIn">
+  <!--HEADER FOR ACTION BUTTONS-->
+  <div class="row" [formGroup]="reportForm">
+    <div class="col-md-1">
+        <label>Periode</label>
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate" class="form-control form-control-sm" id="start-date">
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm" id="end-date">
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary" (click)="sendMail()"><i class="icon-paper-plane"></i> Kirim</button>
+    </div>
+  </div>
+</div>

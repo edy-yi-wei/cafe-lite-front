@@ -1,0 +1,79 @@
+<div class="animated fadeIn">
+  <!--HEADER FOR ACTION BUTTONS-->
+  <div>    
+    <button type="button" class="btn btn-secondary" (click)="addNew()"><i class="icon-plus"></i> Baru</button>
+    <button type="button" class="btn btn-primary" (click)="saveModule()"><i class="icon-paper-plane"></i> Simpan</button>    
+    <button type="button" class="btn btn-secondary" (click)="deleteModule()"><i class="icon-trash"></i> Hapus</button>
+  </div>
+  <br/>
+  <div class="row">
+      <div class="col-md-3">
+          <div class="card">
+            <div class="card-header">
+              <i class="fa fa-align-justify"></i> <strong> Daftar Modul</strong>
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <input type="text" #searchBox (keyup.enter)="onSearchEnter(searchBox.value)" class="form-control form-control-sm" placeholder="Cari berdasarkan nama business unit">
+                <span class="input-group-append">
+                  <button class="btn btn-secondary btn-sm" type="button" (click)="selectModule()"><i class="icon-magnifier"></i></button>
+                </span>
+              </div>
+              <br/>
+              <table class="table table-striped form-control-sm">
+                <tbody>
+                  <tr *ngFor="let m of modules">
+                    <td><a href="#" (click)="showModule(m.moduleId); false">{{m.moduleName}}</a></td>
+                  </tr>                  
+                </tbody>
+              </table>
+              <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage" (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            </div>
+          </div>
+        </div>
+    
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">
+          <strong>Modul</strong>
+          <small>{{mode.value}}</small>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="moduleForm">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="module-code">Kode</label>
+                <input type="text" formControlName="moduleCode" class="form-control form-control-sm" id="module-code">
+              </div>
+            </div>          
+            <div class="row">
+            <div class="form-group col-md-6">
+                <label for="module-name">Nama</label>
+                <input type="text" formControlName="moduleName" class="form-control form-control-sm" id="module-name">
+              </div>
+            </div>          
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="parent-name">Parent</label>
+                <input type="text" formControlName="parentName" class="form-control form-control-sm" id="parent-name">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="module-url">URL</label>
+                <input type="text" formControlName="moduleUrl" class="form-control form-control-sm" id="module-url">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-12">
+                <label for="notes">Keterangan</label>
+                <textarea id="notes" formControlName="notes" rows="9" class="form-control form-control-sm"></textarea>
+              </div>
+            </div> 
+          </form>
+        </div>
+      </div>
+    </div><!--/.col-->
+  </div><!--/.row-->  
+</div>

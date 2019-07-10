@@ -12,7 +12,7 @@ import { RegisterComponent } from './views/register/register.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {
@@ -45,11 +45,23 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DefaultLayoutComponent,
+    component: DefaultLayoutComponent,    
     data: {
       title: 'Home'
     },
     children: [
+      {
+        path: 'master',
+        loadChildren: () => import('./views/master/master.module').then(m => m.MasterModule)
+      },
+      {
+        path: 'transaction',
+        loadChildren: () => import('./views/transaction/transaction.module').then(m => m.TransactionModule)
+      },
+      {
+        path: 'report',
+        loadChildren: () => import('./views/report/report.module').then(m => m.ReportModule)
+      },
       {
         path: 'base',
         loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)

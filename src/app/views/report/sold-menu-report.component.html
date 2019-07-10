@@ -1,0 +1,52 @@
+<div class="animated fadeIn">
+  <!--HEADER FOR ACTION BUTTONS-->
+  <div class="row" [formGroup]="reportForm">
+    <div class="col-md-1">
+        <label>Periode</label>
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate" class="form-control form-control-sm" id="start-date">
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm" id="end-date">
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary" (click)="selectSoldMenu()"><i class="icon-doc"></i> Tampil</button>
+    </div>
+  </div>
+  <br/>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h2>Laporan Penjualan per Menu</h2>
+        </div>
+        <div class="card-body">              
+          <table class="table table-striped form-control-sm">
+            <thead>
+              <tr>
+                <th>Menu</th>
+                <th style="text-align: right">Penjualan (porsi)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of menus">
+                <td>{{m.menu.menuName}}</td>
+                <td align="right">{{m.quantity | number : ''}}</td>                
+              </tr>                  
+            </tbody>
+          </table>
+          <!-- <br/>
+          <div class="row">
+            <div class="col-md-4">
+              <h4>Total : {{total | number : ''}}</h4>
+            </div>
+            <div class="col-md-8">
+              <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage" (pageChanged)="pageChanged($event)" class="pagination-sm justify-content-end" [maxSize]="8"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            </div>
+        </div> -->
+      </div>
+    </div>
+  </div><!--/.col-->    
+</div>

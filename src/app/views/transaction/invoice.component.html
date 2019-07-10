@@ -1,0 +1,160 @@
+<div class="animated fadeIn">
+  <!--HEADER FOR ACTION BUTTONS-->
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary" (click)="addNew(true)"><i class="icon-plus"></i> Baru</button>
+      <button type="button" class="btn btn-primary" (click)="paymentModal.show()"><i class="icon-paper-plane"></i> Bayar</button>    
+      <button type="button" class="btn btn-secondary" (click)="reprintInvoice()"><i class="icon-printer"></i> Cetak</button>
+      <button type="button" class="btn btn-secondary" (click)="authModal.show()"><i class="icon-check"></i> Closing</button>
+    </div>
+    <div class="col-md-6">
+      <div class="row" [formGroup]="invoiceForm">
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <select id="invoice-type" class="form-control form-control-sm" formControlName="invoiceType">
+              <option value="Makan">Makan</option>
+              <option value="Bungkus">Bungkus</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+              <input type="text" formControlName="customerName" class="form-control form-control-sm" id="customer-name" placeholder="Nama Customer">
+          </div>
+        </div>
+      </div>
+    </div>
+  <br/>
+  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="input-group">
+            <input type="text" #searchBox (keyup.enter)="onSearchMenuEnter(searchBox.value)" class="form-control form-control-sm" placeholder="Cari berdasarkan nama Menu">
+            <span class="input-group-append">
+              <button class="btn btn-secondary btn-sm" type="button" (click)="onSearchMenuEnter(searchBox.value)"><i class="icon-magnifier"></i></button>
+            </span>
+          </div>
+          <br/>
+          <table class="table table-striped form-control-sm">                
+            <tbody>
+              <tr *ngFor="let m of menus">
+                <td>{{m.menuName}}</td>
+                <td>{{m.menuPrice | number:''}}</td>
+                <td><button class="btn btn-ghost-primary btn-sm" (click)="chooseMenu(m.menuId)"><i class="icon-plus"></i></button></td>
+              </tr>                  
+            </tbody>
+          </table>
+          <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage" (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-striped form-control-sm">
+            <thead>
+              <tr>
+                <th>Menu</th>
+                <th style="text-align: right">Quantity</th>
+                <th style="text-align: right">Harga</th>                
+                <th style="text-align: right">Jumlah</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let d of details.controls; index as i">
+                <ng-container [formGroup]="d">
+                  <td>{{details.controls[i].controls.menuName.value}}</td>
+                  <td align="right">{{details.controls[i].controls.quantity.value}}</td>
+                  <td align="right">{{details.controls[i].controls.price.value | number: ''}}</td>                  
+                  <td align="right">{{(details.controls[i].controls.price.value * details.controls[i].controls.quantity.value) | number: ''}}</td>
+                  <td><button class="btn btn-ghost-primary btn-sm" (click)="removeMenu(details.controls[i].controls.menuId.value)"><i class="icon-minus"></i></button></td>
+                </ng-container>
+              </tr>                  
+            </tbody>
+          </table>
+          <br/>
+          <h3>Total : {{total.value | number: ''}}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #paymentModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" (onHide)="onModalHide()">
+  <div class="modal-dialog modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Pembayaran</h4>
+        <button type="button" class="close" (click)="paymentModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Nilai Belanja</h3>
+          </div>
+          <div class="col-md-6" style="text-align: right">
+            <h3>{{total.value | number: ''}}</h3>
+          </div>
+          <div class="col-md-6">
+            <h3>Bayar</h3>
+          </div>
+          <div class="col-md-6" [formGroup]="invoiceForm">
+            <input type="text" mask = "comma_separator.2" formControlName="payment" id="payment-value" (keyup.enter)="calculateChange()" class="form-control" style="text-align: right; font-size: x-large" placeholder="0">
+          </div>
+          <div class="col-md-6">
+            <h3>Kembalian</h3>
+          </div>
+          <div class="col-md-6" style="text-align: right">
+            <h3>{{change | number: ''}}</h3>
+          </div>
+        </div>
+        <br/>
+        <h4 style="color: dodgerblue">{{notif}}</h4>
+      </div>
+      <div class="modal-footer">
+        <button #closeButton type="button" class="btn btn-primary" (click)="paymentModal.hide()">Close</button>
+        <!--<button type="button" class="btn btn-primary" (click)="calculateChange()">Bayar</button>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #authModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Authentication</h4>
+        <button type="button" class="close" (click)="authModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-10 mx-auto">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="icon-user"></i></span>
+              </div>
+              <input type="text" [formControl]="userName" class="form-control" placeholder="Username" autocomplete="username">
+            </div>
+            <div class="input-group mb-4">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="icon-lock"></i></span>
+              </div>
+              <input type="password" [formControl]="userPassword" class="form-control" placeholder="Password" autocomplete="current-password">
+            </div>          
+          </div>
+        </div>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" (click)="doClosing()" class="btn btn-primary px-4">Validate</button>
+        <!-- <button #closeButton type="button" class="btn btn-primary" (click)="paymentModal.hide()">Close</button> -->
+        <!--<button type="button" class="btn btn-primary" (click)="calculateChange()">Bayar</button>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
