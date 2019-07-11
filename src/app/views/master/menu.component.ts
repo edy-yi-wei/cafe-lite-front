@@ -21,7 +21,7 @@ export class MenuComponent implements OnInit{
   }
   
   ngOnInit() {
-    this.selectMenu();
+    // this.selectMenu();
   }
 
   onSearchEnter(searchValue){
@@ -67,6 +67,7 @@ export class MenuComponent implements OnInit{
       )
     }
   }
+
 
   showMenu(id: number){
     var menu = this.menus.find(x=> x.menuId == id);

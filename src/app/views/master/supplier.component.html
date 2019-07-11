@@ -1,0 +1,82 @@
+<div class="animated fadeIn">
+    <!--HEADER FOR ACTION BUTTONS-->
+    <div>
+        <button type="button" class="btn btn-secondary" (click)="addNew()"><i class="icon-plus"></i> Baru</button>
+        <button type="button" class="btn btn-primary" (click)="saveSupplier()"><i class="icon-paper-plane"></i>
+            Simpan</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteSupplier()"><i class="icon-trash"></i> Hapus</button>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> <strong> Daftar Supplier</strong>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" #searchBox (keyup.enter)="onSearchEnter(searchBox.value)"
+                            class="form-control form-control-sm" placeholder="Cari berdasarkan nama Supplier">
+                        <span class="input-group-append">
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="selectSupplier()"><i
+                                    class="icon-magnifier"></i></button>
+                        </span>
+                    </div>
+                    <br />
+                    <table class="table table-striped form-control-sm">
+                        <tbody>
+                            <tr *ngFor="let m of listSupplier">
+                                <td><a href="#" (click)="showSupplier(m.supplierId); false">{{m.supplierName}}</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems"
+                        [formControl]="currentPage" (pageChanged)="pageChanged($event)" class="pagination-sm"
+                        [maxSize]="4" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                        lastText="&raquo;"></pagination>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Supplier</strong>
+                    <small>{{mode.value}}</small>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="supplierForm">
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="supplier-code">Kode Supplier</label>
+                                <input type="text" formControlName="supplierCode" class="form-control form-control-sm"
+                                    id="supplier-code">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="supplier-name">Nama Supplier</label>
+                                <input type="text" formControlName="supplierName" class="form-control form-control-sm"
+                                    id="supplier-name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label for="printout-name">Alamat</label>
+                                <textarea formControlName="address" id="address" cols="30" rows="5" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-3">
+                                <label for="printout-name">No. Telpon</label>
+                                <input type="text" formControlName="phone" mask="0{15}" class="form-control form-control-sm" id="phone">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>

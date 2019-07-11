@@ -6,6 +6,7 @@ import { RoleComponent } from './role.component';
 import { UserComponent } from './user.component';
 import { MenuComponent } from './menu.component';
 import { RouterGuard } from '../../service/router-guard';
+import { SupplierComponent } from './supplier.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
     children: [
       {
         path: 'menu',
-        component: MenuComponent, canActivate: [RouterGuard],
+        component: MenuComponent,
+        // component: MenuComponent, canActivate: [RouterGuard],
         data: {
           title: 'Menu'
         }
@@ -40,6 +42,14 @@ const routes: Routes = [
         component: UserComponent, canActivate: [RouterGuard],
         data: {
           title: 'User'
+        }
+      },
+      {
+        path: 'supplier',
+        component: SupplierComponent,
+        // component: MenuComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Supplier'
         }
       }
     ]

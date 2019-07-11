@@ -13,6 +13,7 @@ import { ModuleComponent } from './module.component';
 import { RoleComponent } from './role.component';
 import { UserComponent } from './user.component';
 import { MenuComponent } from './menu.component';
+import { SupplierComponent } from './supplier.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -29,7 +30,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     ModuleComponent,
     RoleComponent,
     UserComponent,
-    MenuComponent
+    MenuComponent,
+    SupplierComponent
   ]
 })
 export class MasterModule { }
