@@ -74,7 +74,7 @@ import { RouterGuard } from './service/router-guard';
     provide: LocationStrategy,
     useClass: HashLocationStrategy    
   }, 
-  // RouterGuard  
+  RouterGuard  
   ],
   bootstrap: [ AppComponent ]
 })

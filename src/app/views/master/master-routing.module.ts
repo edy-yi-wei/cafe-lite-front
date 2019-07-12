@@ -17,8 +17,8 @@ const routes: Routes = [
     children: [
       {
         path: 'menu',
-        component: MenuComponent,
-        // component: MenuComponent, canActivate: [RouterGuard],
+        // component: MenuComponent,
+        component: MenuComponent, canActivate: [RouterGuard],
         data: {
           title: 'Menu'
         }
@@ -46,8 +46,8 @@ const routes: Routes = [
       },
       {
         path: 'supplier',
-        component: SupplierComponent,
-        // component: MenuComponent, canActivate: [RouterGuard],
+        // component: SupplierComponent,
+        component: SupplierComponent, canActivate: [RouterGuard],
         data: {
           title: 'Supplier'
         }
