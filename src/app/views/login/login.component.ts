@@ -35,9 +35,9 @@ export class LoginComponent {
         // alert(data);
         sessionStorage.setItem('userName', nama);
         sessionStorage.setItem('userPassword', pass);
-        this.generateMenu(nama);
+        // this.generateMenu(nama);
         // console.log(url);
-        // this.router.navigate(['/master/menu']);
+        this.router.navigate(['/master/menu']);
       },
       error => {        
         alert("User name atau password Anda salah!");
@@ -69,6 +69,14 @@ export class LoginComponent {
         this.router.navigate([firstUrl]);
       }
     )
+
+    for (let mn of this.navItems) {
+      console.log(mn.name);
+      console.log(mn.children);
+      var child = [];
+      child = mn.children;
+      console.log(child);
+    }
   }
 
   resetNavMenu() {

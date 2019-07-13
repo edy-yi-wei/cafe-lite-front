@@ -10,16 +10,13 @@ import { UserService } from '../../service/user.service';
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
   public navItems = navItems;
+  public tempNavItems = [];
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement;
   loginUser = sessionStorage.getItem('userName');
 
   constructor(public userService: UserService, private router: Router, private route: ActivatedRoute, @Inject(DOCUMENT) _document?: any) {
-    // let userName = sessionStorage.getItem('userName');
-    // console.log(this.navItems);
-    // this.generateMenu(userName, _document); 
-
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = _document.body.classList.contains('sidebar-minimized');
     });
@@ -28,49 +25,50 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
       attributes: true,
       attributeFilter: ['class']
     });
+
   }
 
   ngOnInit() {
-    // this.navItems = navItems;
-    // console.log(this.navItems);
-    // this.generateMenu(this.loginUser);
+    this.generateMenu(this.loginUser);
+  }
+  
+
+  generateMenu(userName) {
+    this.resetNavMenu();
+    this.tempNavItems = this.navItems;
+    this.userService.getRoleUser(userName).subscribe(
+      data => {
+        let role = data;
+        for (let mn of this.tempNavItems) {
+          role.moduleList.forEach(element => {
+            if (mn.name == element.module.parentName) {
+              mn.children.push({
+                name: element.module.moduleName,
+                url: element.module.moduleUrl,
+                icon: 'icon-star'
+              });
+            }
+          });
+        }
+
+      }
+    );
+    
+    //clear
+    this.navItems = [];
+    //re-assign
+    setTimeout(() => {
+      this.navItems = this.tempNavItems;
+    }, 1);
   }
 
-  // generateMenu(userName) {
-  //   this.navItems = navItems;
-  //   // this.resetNavMenu();
-  //   var firstUrl='';
-  //   this.userService.getRoleUser(userName).subscribe(
-  //     data => {
-  //       let role = data;
-  //       role.moduleList.forEach(element => {
-  //         for(let mn of this.navItems){
-  //           if(mn.name == element.module.parentName){
-  //             mn.children.push({
-  //               name: element.module.moduleName,
-  //               url: element.module.moduleUrl,
-  //               icon: 'icon-star'
-  //             });
-  //             if(firstUrl==''){
-  //               firstUrl = element.module.moduleUrl;
-  //             }
-  //             break;
-  //           }
-  //         }
-  //       });
-  //       console.log(this.navItems);        
-  //       this.router.navigate([firstUrl]);
-  //     }
-  //   )
-  // }
-
-  // resetNavMenu() {
-  //   this.navItems.forEach(element => {
-  //     while(element.children.length>0){
-  //       element.children.pop();
-  //     }
-  //   });
-  // }
+  resetNavMenu() {
+    this.navItems.forEach(element => {
+      while(element.children.length>0){
+        element.children.pop();
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.changes.disconnect();

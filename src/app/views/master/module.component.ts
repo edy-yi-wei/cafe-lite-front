@@ -21,6 +21,7 @@ export class ModuleComponent implements OnInit{
   
   ngOnInit() {
     this.selectModule();
+
   }
 
   onSearchEnter(searchValue){
@@ -31,15 +32,16 @@ export class ModuleComponent implements OnInit{
   selectModule(){
     this.moduleService.selectModule(this.currentPage.value, this.search).subscribe(
       data => {
-        console.log(data);
+        // console.log(data);
         this.modules = data.content;        
         this.totalItems = data.totalElements;
       }
     )
+
   }
 
   saveModule(){
-    console.log(this.moduleForm.value);
+    // console.log(this.moduleForm.value);
     this.moduleService.saveModule(this.moduleForm.value).subscribe(
       data => {
         alert(data);

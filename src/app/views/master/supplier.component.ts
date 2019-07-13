@@ -39,6 +39,7 @@ export class SupplierComponent implements OnInit {
                 this.router.navigate(['/login']);
             }
         )
+
     }
 
     saveSupplier() {
