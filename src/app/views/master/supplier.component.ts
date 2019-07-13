@@ -21,7 +21,7 @@ export class SupplierComponent implements OnInit {
     }
 
     ngOnInit() {
-        // this.selectSupplier();
+        this.selectSupplier();
     }
 
     onSearchEnter(searchValue) {
@@ -57,7 +57,7 @@ export class SupplierComponent implements OnInit {
 
     deleteSupplier() {
         if (confirm('Apakah Anda yakin akan menghapus data ini?')) {
-            this.supplierService.deleteSupplier(this.supplierForm.controls['menuId'].value).subscribe(
+            this.supplierService.deleteSupplier(this.supplierForm.controls['supplierId'].value).subscribe(
                 data => {
                     alert(data);
                     this.selectSupplier();

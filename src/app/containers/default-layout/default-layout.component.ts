@@ -9,7 +9,7 @@ import { UserService } from '../../service/user.service';
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
-  public navItems = navItems;
+  public navItems = [];
   public tempNavItems = [];
   public sidebarMinimized = true;
   private changes: MutationObserver;
@@ -29,11 +29,13 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // this.internetChecker();
     this.generateMenu(this.loginUser);
   }
   
 
   generateMenu(userName) {
+    var firstUrl = '';
     this.resetNavMenu();
     /*
     hack explanation
@@ -41,7 +43,7 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     clear navItems, then give a delay to re-set navItems object from temporary object.
     voilla!
     */
-    this.tempNavItems = this.navItems;
+    this.tempNavItems = navItems;
     this.userService.getRoleUser(userName).subscribe(
       data => {
         let role = data;
@@ -53,9 +55,15 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
                 url: element.module.moduleUrl,
                 icon: 'icon-star'
               });
+              if (firstUrl == '') {
+                firstUrl = element.module.moduleUrl;
+              }
             }
           });
+          
         }
+
+        this.router.navigate([firstUrl]);
         
       }
     );
@@ -64,7 +72,15 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
     //re-assign
     setTimeout(() => {
       this.navItems = this.tempNavItems;
-    }, 1);
+    }, 10);
+
+    setTimeout(() => {
+      if (this.navItems.length == 0) {
+        this.logout();
+      }
+    }, 1000);
+
+    
   }
 
   resetNavMenu() {
@@ -95,6 +111,38 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
       }
     )    
     // location.reload();
+  }
+
+  private baseUrl = 'http://localhost:8080/cafelite';
+  private isOnline = false;
+
+  onlineCheck() {
+    let xhr = new XMLHttpRequest();
+    return new Promise((resolve, reject) => {
+      xhr.onload = () => {
+        // Set online status
+        this.isOnline = true;
+        resolve(true);
+      };
+      xhr.onerror = () => {
+        // Set online status
+        this.isOnline = false;
+        reject(false);
+      };
+      xhr.open('GET', this.baseUrl, true);
+      xhr.send();
+    });
+  }
+
+  internetChecker() {
+    this.onlineCheck().then(() => {
+      // Has internet connection, carry on 
+      this.generateMenu(this.loginUser);
+    }).catch(() => {
+      // Has no internet connection, let the user know
+      alert('Sorry, cannot connect to server.');
+      this.router.navigate(['/login']);
+    });
   }
 
   
