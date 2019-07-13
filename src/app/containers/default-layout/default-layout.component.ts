@@ -53,7 +53,11 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
       }
     );
-    
+    /*
+    hack explanation, set navItems to temporary object.
+    clear navItems, then give a delay to re-set navItems object from temporary object.
+    voilla!
+    */
     //clear
     this.navItems = [];
     //re-assign
