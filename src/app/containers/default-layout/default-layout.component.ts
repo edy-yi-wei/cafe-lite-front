@@ -9,7 +9,7 @@ import { UserService } from '../../service/user.service';
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent implements OnInit, OnDestroy {
-  public navItems = [];
+  public navItems = navItems;
   public tempNavItems = [];
   public sidebarMinimized = true;
   private changes: MutationObserver;
@@ -30,9 +30,41 @@ export class DefaultLayoutComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.internetChecker();
-    this.generateMenu(this.loginUser);
+    //this.generateMenu(this.loginUser);
+    this.menuGenerator(this.loginUser);
   }
-  
+
+  menuGenerator(userName){
+    
+    this.resetNavMenu();
+    /*
+    hack explanation
+    set navItems to temporary object.
+    clear navItems, then re-set navItems object from temporary object.
+    voilla!
+    */
+    this.tempNavItems = this.navItems;
+    this.navItems = [];
+    this.userService.getRoleUser(userName).subscribe(
+      resp => {
+        for (let mod of this.tempNavItems){
+          resp.moduleList.forEach(element => {
+            if (mod.name == element.module.parentName) {
+                mod.children.push({
+                name: element.module.moduleName,
+                url: element.module.moduleUrl,
+                icon: 'icon-star'
+              });
+            }
+          });
+        }
+        this.navItems = this.tempNavItems;
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
 
   generateMenu(userName) {
     var firstUrl = '';
