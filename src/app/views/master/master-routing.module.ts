@@ -7,6 +7,7 @@ import { UserComponent } from './user.component';
 import { MenuComponent } from './menu.component';
 import { RouterGuard } from '../../service/router-guard';
 import { SupplierComponent } from './supplier.component';
+import { MaterialComponent } from './material.component';
 
 const routes: Routes = [
   {
@@ -50,6 +51,14 @@ const routes: Routes = [
         component: SupplierComponent, canActivate: [RouterGuard],
         data: {
           title: 'Supplier'
+        }
+      },
+      {
+        path: 'material',
+        // component: SupplierComponent,
+        component: MaterialComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Material'
         }
       }
     ]

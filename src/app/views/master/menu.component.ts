@@ -21,7 +21,7 @@ export class MenuComponent implements OnInit{
   }
   
   ngOnInit() {
-    // this.selectMenu();
+    this.selectMenu();
   }
 
   onSearchEnter(searchValue){

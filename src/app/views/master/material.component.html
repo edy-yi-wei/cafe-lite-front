@@ -1,0 +1,156 @@
+<div class="animated fadeIn">
+    <!--HEADER FOR ACTION BUTTONS-->
+    <div>
+        <button type="button" class="btn btn-secondary" (click)="addNew()"><i class="icon-plus"></i> Baru</button>
+        <button type="button" class="btn btn-primary" (click)="saveMaterial()"><i class="icon-paper-plane"></i>
+            Simpan</button>
+        <button type="button" class="btn btn-secondary" (click)="deleteMaterial()"><i class="icon-trash"></i>
+            Hapus</button>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> <strong> Daftar Material</strong>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" #searchBox (keyup.enter)="onSearchEnter(searchBox.value)"
+                            class="form-control form-control-sm" placeholder="Cari berdasarkan nama Material">
+                        <span class="input-group-append">
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="selectMaterial()"><i
+                                    class="icon-magnifier"></i></button>
+                        </span>
+                    </div>
+                    <br />
+                    <table class="table table-striped form-control-sm">
+                        <tbody>
+                            <tr *ngFor="let m of materials">
+                                <td><a href="#" (click)="showMaterial(m.materialId); false">{{m.materialName}}</a></td>
+                                <td>{{m.quantity}}</td>
+                                <td>{{m.uom}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems"
+                        [formControl]="currentPage" (pageChanged)="pageChanged($event)" class="pagination-sm"
+                        [maxSize]="4" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+                        lastText="&raquo;"></pagination>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card">
+                <div class="card-header">
+                    <strong>Material</strong>
+                    <small>{{mode.value}}</small>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="materialForm">
+                        <div formGroupName="material">
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label for="material-code">Kode Material</label>
+                                    <input type="text" formControlName="materialCode"
+                                        class="form-control form-control-sm" id="material-code">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label for="material-name">Nama Material</label>
+                                    <input type="text" formControlName="materialName"
+                                        class="form-control form-control-sm" id="material-name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <label for="material-name">UoM</label>
+                                    <input type="text" formControlName="uom" class="form-control form-control-sm"
+                                        id="uom">
+                                </div>
+                            </div>
+                            <div *ngIf="mode.value == 'edit'">
+                                <div class="row">
+                                    <div class="form-group col-md-2">
+                                        <label for="material-name">Jumlah Stock</label>
+                                        <div>
+                                            {{materialForm.controls.material.controls.quantity.value}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group col-md-2">
+                                    <div class="form-check form-check-inline mr-1">
+                                        <input type="checkbox" formControlName="stockable" class="form-check-input"
+                                            id="stockable">
+                                        <label class="form-check-label" for="inline-checkbox1">Stockable</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-primary btn-sm" (click)="addChild()"
+                                    style="margin-bottom: 10px;"><i class="icon-plus"></i> Add</button>
+                                <div class="table-responsive">
+                                    <table class="table table-striped form-control-sm">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nama Material</th>
+                                                <th>Kode Material</th>
+                                                <th>UoM</th>
+                                                <th>Jumlah Konversi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="overflow-y: auto">
+                                            <tr formArrayName="materialDetails" *ngFor="let md of materialForm.get('materialDetails').controls; 
+                                                                        let i = index">
+                                                <td><button class="btn btn-ghost-danger btn-sm"
+                                                        (click)="deleteChild(i)"><i class="icon-trash"></i></button>
+                                                </td>
+                                                <ng-container [formGroupName]="i">
+                                                    <ng-container formGroupName="material">
+                                                        <td>
+                                                            <select class="form-control form-control-sm"
+                                                                formControlName="materialId"
+                                                                (change)="loadDetail(i, $event.target.value)">
+                                                                <option *ngFor="let mat of list_material"
+                                                                    [value]="mat.materialId">{{mat.materialName}}
+                                                                </option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <!-- {{md.controls.material.value.materialCode}} -->
+                                                            {{md.value.material.materialCode}}
+                                                        </td>
+                                                        <td>
+                                                            {{md.value.material.uom}}
+                                                        </td>
+                                                    </ng-container>
+
+                                                </ng-container>
+                                                <td [formGroupName]="i">
+                                                    <input type="text" mask="0{2}" formControlName="conversionQuantity"
+                                                        class="form-control form-control-sm" style="width: 100px"
+                                                        placeholder="0">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/.col-->
+    </div>
+    <!--/.row-->
+</div>
