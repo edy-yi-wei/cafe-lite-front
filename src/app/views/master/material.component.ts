@@ -59,21 +59,28 @@ export class MaterialComponent implements OnInit {
 
     }
 
+
     saveMaterial() {
-        this.materialForm.get("material").get("details").setValue(this.materialForm.get("materialDetails").value);
+        var details = this.materialForm.get("materialDetails").value;
+        this.materialForm.get("material").get("details").setValue(details);
         var material = this.materialForm.get("material").value;
 
-        this.materialService.saveMaterial(material).subscribe(
-            data => {
-                alert(data);
-                this.addNew();
-                this.selectMaterial();
-                this.resetChild();
-            },
-            error => {
-                alert(error);
-            }
-        )
+        if (material.materialCode != "" && material.materialName != "" && material.uom != "") {
+            this.materialService.saveMaterial(material).subscribe(
+                data => {
+                    alert(data);
+                    this.addNew();
+                    this.selectMaterial();
+                    this.resetChild();
+                },
+                error => {
+                    alert(error);
+                }
+            )
+        } else {
+            alert("Mohon lengkapi form terlebih dahulu");
+        }
+
     }
 
     deleteMaterial() {
@@ -83,6 +90,7 @@ export class MaterialComponent implements OnInit {
                     alert(data);
                     this.selectMaterial();
                     this.resetChild();
+                    this.addNew();
                 },
                 error => {
                     alert(error);
@@ -134,6 +142,7 @@ export class MaterialComponent implements OnInit {
         this.materialForm.reset();
         this.mode.setValue('new');
         this.resetChild();
+        this.getMaterial();
     }
 
     getMaterial(materialId = null) {

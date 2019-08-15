@@ -61,6 +61,7 @@ export class SupplierComponent implements OnInit {
                 data => {
                     alert(data);
                     this.selectSupplier();
+                    this.addNew();
                 },
                 error => {
                     alert(error);
