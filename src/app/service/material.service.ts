@@ -39,6 +39,14 @@ export class MaterialService {
     )
   }
 
+  getMaterialParent(): Observable<any> {
+    this.createHeaders();
+    return this.http.get(this.apiURL + '/materials/parent', this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   getMaterial(id): Observable<Material> {
     this.createHeaders();
     return this.http.get<Material>(this.apiURL + '/materials/' + id, this.httpOptions)

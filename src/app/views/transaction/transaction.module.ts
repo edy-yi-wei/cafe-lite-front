@@ -11,6 +11,7 @@ import { TransactionRoutingModule } from './transaction-routing.module';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { InvoiceComponent } from './invoice.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PurchasingComponent } from './purchasing.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -25,7 +26,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     ModalModule.forRoot()
   ],
   declarations: [
-    InvoiceComponent
+    InvoiceComponent,
+    PurchasingComponent
   ]
 })
 export class TransactionModule { }

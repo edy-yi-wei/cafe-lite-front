@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InvoiceComponent } from './invoice.component';
 import { RouterGuard } from '../../service/router-guard';
+import { PurchasingComponent } from './purchasing.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,13 @@ const routes: Routes = [
         component: InvoiceComponent, canActivate: [RouterGuard],
         data: {
           title: 'Penjualan'
+        }
+      }
+      ,{
+        path: 'purchasing',
+        component: PurchasingComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Pembelian'
         }
       }
     ]

@@ -150,7 +150,7 @@ export class MaterialComponent implements OnInit {
             data => {
                 var list = data.content;
                 this.list_material = [];
-                this.list_material = list.filter(x => x.details != null && x.details == 0);
+                this.list_material = list.filter(x => x.details.length == 0);
 
                 if(materialId != null){
                     this.list_material = this.list_material.filter(x => x.materialId != materialId);
