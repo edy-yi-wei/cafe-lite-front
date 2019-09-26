@@ -9,9 +9,10 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 // Components Routing
 import { TransactionRoutingModule } from './transaction-routing.module';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
-import { InvoiceComponent } from './invoice.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { InvoiceComponent } from './invoice.component';
 import { PurchasingComponent } from './purchasing.component';
+import { AdjustmentComponent } from './adjustment.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -27,7 +28,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
   ],
   declarations: [
     InvoiceComponent,
-    PurchasingComponent
+    PurchasingComponent,
+    AdjustmentComponent
   ]
 })
 export class TransactionModule { }

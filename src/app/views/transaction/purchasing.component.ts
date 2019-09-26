@@ -154,16 +154,16 @@ export class PurchasingComponent implements OnInit {
 
     if (!is_exist) {
 
-      var row = this.fb.group({
-        quantity: 0,
-        price: 0,
-        total: 0,
-        material: this.fb.group(new Material()),
-      });
 
-      row.controls.material.patchValue(this.list_material.find(x => x.materialId == materialId));
+      var purchasing_detail = new PurchasingDetail();
+      var material = new Material();
+      material = this.list_material.find(x => x.materialId == materialId);
+      purchasing_detail.material = material;
 
-      rows.push(row);
+      var detail = this.fb.group(purchasing_detail);
+
+
+      rows.push(detail);
       
       this.calculateSubTotal();
     } else {
@@ -173,7 +173,7 @@ export class PurchasingComponent implements OnInit {
   }
 
   onModalShow(){
-    
+    this.filterListMaterial();
   }
 
   filterListMaterial(){
@@ -186,6 +186,8 @@ export class PurchasingComponent implements OnInit {
         // var temp_list = this.list_material.filter(x => x.materialId !== matExist.material.materialId);
         // this.list_material = [];
         // this.list_material = temp_list;
+      } else {
+        this.list_material[i].deleted = false;
       }
     }
   }

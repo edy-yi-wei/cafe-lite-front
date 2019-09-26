@@ -9,6 +9,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 // Components Routing
 import { MasterRoutingModule } from './master-routing.module';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { ModalModule } from 'ngx-bootstrap/modal';
 import { ModuleComponent } from './module.component';
 import { RoleComponent } from './role.component';
 import { UserComponent } from './user.component';
@@ -25,7 +26,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     ReactiveFormsModule,
     MasterRoutingModule,
     PaginationModule.forRoot(),
-    NgxMaskModule.forRoot(options)
+    NgxMaskModule.forRoot(options),
+    ModalModule.forRoot()
   ],
   declarations: [
     ModuleComponent,

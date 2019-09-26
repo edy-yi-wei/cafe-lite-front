@@ -71,3 +71,58 @@
     </div><!--/.col-->    
   </div><!--/.row-->  
 </div>
+
+<div bsModal #materialModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" (onShow)="onModalShow()">
+  <div class="modal-dialog modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">List Material</h4>
+        <button type="button" class="close" (click)="materialModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <input type="text" #searchBox (keyup.enter)="searchMaterial(searchBox.value)"
+            class="form-control form-control-sm" placeholder="Cari berdasarkan kode material atau nama material">
+          <span class="input-group-append">
+            <button class="btn btn-secondary btn-sm" type="button" (click)="searchMaterial(searchBox.value)"><i
+                class="icon-magnifier"></i></button>
+          </span>
+        </div>
+        <br />
+        <table class="table table-striped form-control-sm">
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1 text-left"></th>
+              <th class="col-md-3 text-left">Kode Material</th>
+              <th class="col-md-5 text-left">Nama Material</th>
+              <th class="col-md-3 text-left">UoM</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="table-responsive" style="height:300px;overflow-y: auto">
+          <table class="table table-striped form-control-sm">
+            <tbody>
+              <tr class="d-flex" *ngFor="let m of list_material">
+                <td class="col-md-1 text-left"><button [hidden]="m.deleted" class="btn btn-ghost-success btn-sm"
+                    (click)="chooseMaterial(m.materialId)"><i class="icon-check"></i></button></td>
+                <td class="col-md-3 text-left">{{m.materialCode}}</td>
+                <td class="col-md-5 text-left">{{m.materialName}}</td>
+                <td class="col-md-3 text-left">{{m.uom}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalMaterials"
+          [formControl]="currentMaterialPage" (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4"
+          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+      </div>
+      <div class="modal-footer">
+        <button #closeButton type="button" class="btn btn-primary" (click)="materialModal.hide()">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
