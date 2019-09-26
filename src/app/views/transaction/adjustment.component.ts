@@ -38,7 +38,7 @@ export class AdjustmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMaterial();
+    // this.getMaterial();
 
   }
 
@@ -122,13 +122,13 @@ export class AdjustmentComponent implements OnInit {
 
   getMaterial() {
     this.list_material = [];
-    this.materialService.getMaterialParent().subscribe(
-      data => {
-        this.list_material = data;
-        // this.list_material = list.filter(x => x.details.length > 0);
-        // console.log(this.list_material);
-      }
-    )
+    // this.materialService.getMaterialParent().subscribe(
+    //   data => {
+    //     this.list_material = data;
+    //     // this.list_material = list.filter(x => x.details.length > 0);
+    //     // console.log(this.list_material);
+    //   }
+    // )
   }
 
   loadDetail(index, value) {

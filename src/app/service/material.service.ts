@@ -39,9 +39,9 @@ export class MaterialService {
     )
   }
 
-  getMaterialParent(): Observable<any> {
+  getMaterialParent(page, search): Observable<any> {
     this.createHeaders();
-    return this.http.get(this.apiURL + '/materials/parent', this.httpOptions)
+    return this.http.get(this.apiURL + '/materials/parent?search=' + search + '&page=' + page, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       )
