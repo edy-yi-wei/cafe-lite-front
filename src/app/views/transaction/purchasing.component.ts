@@ -144,8 +144,8 @@ export class PurchasingComponent implements OnInit {
     let is_exist = false;
 
     for (var i = 0; i < rows.length; i++) {
-      var form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[i];
-      var mat = form.get("material").value;
+      let form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[i];
+      let mat = form.get("material").value;
       if (mat.materialId == materialId) {
         is_exist = true;
         break;
@@ -155,12 +155,12 @@ export class PurchasingComponent implements OnInit {
     if (!is_exist) {
 
 
-      var purchasing_detail = new PurchasingDetail();
-      var material = new Material();
+      let purchasing_detail = new PurchasingDetail();
+      let material = new Material();
       material = this.list_material.find(x => x.materialId == materialId);
       purchasing_detail.material = material;
 
-      var detail = this.fb.group(purchasing_detail);
+      let detail = this.fb.group(purchasing_detail);
 
 
       rows.push(detail);

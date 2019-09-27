@@ -47,6 +47,22 @@ export class MaterialService {
       )
   }
 
+  selectStock(page, search): Observable<any> {
+    this.createHeaders();
+    return this.http.get(this.apiURL + '/materials/stock?search=' + search + '&page=' + page, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  selectStockable(stockable, page, search): Observable<any> {
+    this.createHeaders();
+    return this.http.get(this.apiURL + '/materials/stockable?search=' + search + '&page=' + page + '&stockable=' + stockable, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   getMaterial(id): Observable<Material> {
     this.createHeaders();
     return this.http.get<Material>(this.apiURL + '/materials/' + id, this.httpOptions)

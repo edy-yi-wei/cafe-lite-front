@@ -96,9 +96,9 @@ export class AdjustmentComponent implements OnInit {
     let rows = this.adjustmentForm.get("adjustment_details") as FormArray;
     let is_exist = false;
 
-    for (var i = 0; i < rows.length; i++) {
-      var form = (this.adjustmentForm.get("adjustment_details") as FormArray).controls[i];
-      var mat = form.get("material").value;
+    for (let i = 0; i < rows.length; i++) {
+      let form = (this.adjustmentForm.get("adjustment_details") as FormArray).controls[i];
+      let mat = form.get("material").value;
       if (mat.materialId == materialId) {
         is_exist = true;
         break;
@@ -107,12 +107,12 @@ export class AdjustmentComponent implements OnInit {
 
     if (!is_exist) {
 
-      var adjustment_detail = new AdjustmentDetail();
-      var material = new Material();
+      let adjustment_detail = new AdjustmentDetail();
+      let material = new Material();
       material = this.list_material.find(x => x.materialId == materialId);
       adjustment_detail.material = material;
 
-      var detail = this.fb.group(adjustment_detail);
+      let detail = this.fb.group(adjustment_detail);
 
 
       rows.push(detail);
