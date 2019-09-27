@@ -19,7 +19,7 @@
                         <input type="text" #searchBox (keyup.enter)="onSearchEnter(searchBox.value)"
                             class="form-control form-control-sm" placeholder="Cari berdasarkan nama Material">
                         <span class="input-group-append">
-                            <button class="btn btn-secondary btn-sm" type="button" (click)="selectMaterial()"><i
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="onSearchEnter(searchBox.value)"><i
                                     class="icon-magnifier"></i></button>
                         </span>
                     </div>
@@ -92,59 +92,51 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-primary btn-sm" (click)="addChild()"
-                                    style="margin-bottom: 10px;"><i class="icon-plus"></i> Add</button>
-                                <div class="table-responsive">
-                                    <table class="table table-striped form-control-sm">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Nama Material</th>
-                                                <th>Kode Material</th>
-                                                <th>UoM</th>
-                                                <th>Jumlah Konversi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style="overflow-y: auto">
-                                            <tr formArrayName="materialDetails" *ngFor="let md of materialForm.get('materialDetails').controls; 
-                                                                        let i = index">
-                                                <td><button class="btn btn-ghost-danger btn-sm"
-                                                        (click)="deleteChild(i)"><i class="icon-trash"></i></button>
-                                                </td>
-                                                <ng-container [formGroupName]="i">
-                                                    <ng-container formGroupName="material">
-                                                        <td>
-                                                            <select class="form-control form-control-sm"
-                                                                formControlName="materialId"
-                                                                (change)="loadDetail(i, $event.target.value)">
-                                                                <option *ngFor="let mat of list_material"
-                                                                    [value]="mat.materialId">{{mat.materialName}}
-                                                                </option>
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <!-- {{md.controls.material.value.materialCode}} -->
-                                                            {{md.value.material.materialCode}}
-                                                        </td>
-                                                        <td>
-                                                            {{md.value.material.uom}}
-                                                        </td>
-                                                    </ng-container>
-
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-sm" (click)="materialModal.show()"
+                                style="margin-bottom: 10px;"><i class="icon-plus"></i> Add</button>
+                            <div class="table-responsive">
+                                <table class="table table-striped form-control-sm">
+                                    <thead>
+                                        <tr class="d-flex">
+                                            <th class="col-md-1 text-left"></th>
+                                            <th class="col-md-2 text-left">Kode Material</th>
+                                            <th class="col-md-4 text-left">Nama Material</th>
+                                            <th class="col-md-4 text-left">UoM</th>
+                                            <th class="col-md-1 text-right">Jumlah Konversi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="d-flex" *ngFor="let md of materialFormArray.controls; let i = index">
+                                            <td class="col-md-1 text-left"><button class="btn btn-ghost-danger btn-sm"
+                                                    (click)="deleteChild(i)"><i class="icon-trash"></i></button>
+                                            </td>
+                                            <ng-container [formGroup]="md">
+                                                <ng-container formGroupName="material">
+                                                    <td class="col-md-2 text-left">
+                                                        {{md.controls.material.value.materialCode}}
+                                                    </td>
+                                                    <td class="col-md-4 text-left">
+                                                        {{md.controls.material.value.materialName}}
+                                                    </td>
+                                                    <td class="col-md-4 text-left">
+                                                        {{md.controls.material.value.uom}}
+                                                    </td>
                                                 </ng-container>
-                                                <td [formGroupName]="i">
-                                                    <input type="text" mask="0{2}" formControlName="conversionQuantity"
-                                                        class="form-control form-control-sm" style="width: 100px"
-                                                        placeholder="0">
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                            </ng-container>
+                    
+                                            <td class="col-md-1 text-left" [formGroup]="md">
+                                                <input type="text" mask="comma_separator.2" formControlName="conversionQuantity"
+                                                    class="form-control form-control-sm text-right" placeholder="0">
+                                            </td>
+                    
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
+                    </div>
 
                     </form>
                 </div>
@@ -154,3 +146,61 @@
     </div>
     <!--/.row-->
 </div>
+
+<div bsModal #materialModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" (onShow)="onModalShow()">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">List Material</h4>
+                <button type="button" class="close" (click)="materialModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="text" #searchBoxMaterial (keyup.enter)="searchMaterial(searchBoxMaterial.value)"
+                        class="form-control form-control-sm"
+                        placeholder="Cari berdasarkan kode material atau nama material">
+                    <span class="input-group-append">
+                        <button class="btn btn-secondary btn-sm" type="button"
+                            (click)="searchMaterial(searchBoxMaterial.value)"><i class="icon-magnifier"></i></button>
+                    </span>
+                </div>
+                <br />
+                <table class="table table-striped form-control-sm">
+                    <thead>
+                        <tr class="d-flex">
+                            <th class="col-md-1 text-left"></th>
+                            <th class="col-md-3 text-left">Kode Material</th>
+                            <th class="col-md-5 text-left">Nama Material</th>
+                            <th class="col-md-3 text-left">UoM</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="table-responsive" style="height:300px;overflow-y: auto">
+                    <table class="table table-striped form-control-sm">
+                        <tbody>
+                            <tr class="d-flex" *ngFor="let m of list_material">
+                                <td class="col-md-1 text-left"><button [hidden]="m.deleted"
+                                        class="btn btn-ghost-success btn-sm" (click)="chooseMaterial(m.materialId)"><i
+                                            class="icon-check"></i></button></td>
+                                <td class="col-md-3 text-left">{{m.materialCode}}</td>
+                                <td class="col-md-5 text-left">{{m.materialName}}</td>
+                                <td class="col-md-3 text-left">{{m.uom}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalMaterials"
+                    [formControl]="currentMaterialPage" (pageChanged)="pageChanged($event)" class="pagination-sm"
+                    [maxSize]="4" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                </pagination>
+            </div>
+            <div class="modal-footer">
+                <button #closeButton type="button" class="btn btn-primary" (click)="materialModal.hide()">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -16,8 +16,8 @@ import { Purchasing } from '../../model/purchasing';
 export class PurchasingComponent implements OnInit {
   purchasingForm: FormGroup;
   // details: FormArray = new FormArray([]);
-  totalItems: number = 1;
-  currentPage = new FormControl(1);
+  totalMaterials: number = 1;
+  currentMaterialPage = new FormControl(1);
   mode = new FormControl('new');
   search: string = '';
   list_material: Material[] = [];
@@ -25,18 +25,10 @@ export class PurchasingComponent implements OnInit {
 
   constructor(public purchasingService: PurchasingService, public materialService: MaterialService, public supplierService: SupplierService,
     private fb: FormBuilder, private router: Router) {
-    var purchasing = this.fb.group({
-      purchasingId: 0,
-      purchasingNumber: '',
-      purchasingDate: Date,
-      supplierId: 0,
-      supplierCode: 0,
-      amount: 0,
-      discount: 0,
-      netto: 0
-    });
+
     this.purchasingForm = this.fb.group({
-      purchasing: purchasing,
+      purchasing: this.fb.group(new Purchasing()),
+      supplier: this.fb.group(new Supplier()),
       purchasing_details: fb.array([])
     });
 
@@ -45,7 +37,17 @@ export class PurchasingComponent implements OnInit {
   ngOnInit() {
     this.getSupplier();
     this.getMaterial();
+    var supplier = this.purchasingForm.get("supplier");
+    supplier.get("address").disable();
+    supplier.get("phone").disable();
+    
 
+  }
+
+  addNew(){
+    if (confirm("Apakah Anda yakin akan membatalkan semua pembelian?")) {
+      this.resetForm();
+    }
   }
 
   getSupplier() {
@@ -56,6 +58,21 @@ export class PurchasingComponent implements OnInit {
         this.list_supplier = list;
       }
     )
+  }
+
+  loadSupplier(supplierId: number){
+    this.supplierService.getSupplier(supplierId).subscribe(
+      data => {
+       var supplier = data;
+       this.purchasingForm.get("supplier").patchValue(supplier);
+      },
+      error => {
+        alert(error);
+      }
+    )
+    // var supplier = this.suppliers.find(x => x.supplierId == supplierId);
+    // this.supplierForm.patchValue(supplier);
+    // this.mode.setValue('edit');
   }
 
   resetForm() {
@@ -76,17 +93,21 @@ export class PurchasingComponent implements OnInit {
   }
 
   saveTransaction() {
+    var purch = this.purchasingForm.get("purchasing").value;
+    var supp = this.purchasingForm.get("supplier").value;
+    var det = this.purchasingForm.get("purchasing_details").value;
 
-    // var purchasing = this.purchasingForm.get("purchasing").value;
-    var formHeader = this.purchasingForm.get("purchasing").value;
     var purchasing = new Purchasing();
-    purchasing = formHeader;
-    var details = this.purchasingForm.get("purchasing_details").value;
     var supplier = new Supplier();
-    supplier.supplierId = formHeader.supplierId;
+    var details : PurchasingDetail[];
+
+    purchasing = purch;
+    supplier = supp;
+    details = det;
+
     purchasing.supplier = supplier;
     purchasing.details = details;
-    purchasing.discount = formHeader.discount ? formHeader.discount : 0;
+    purchasing.discount = purch.discount ? purch.discount : 0;
 
     var allowed = true;
     var formDetails = (this.purchasingForm.get("purchasing_details") as FormArray);
@@ -100,58 +121,113 @@ export class PurchasingComponent implements OnInit {
       }
     }
 
+
     if (purchasing.supplier.supplierId && purchasing.details.length > 0 && allowed) {
-      this.purchasingService.saveTransaction(purchasing).subscribe(
-        data => {
-          alert(data);
-          this.resetForm();
-        },
-        error => {
-          alert(error);
-        }
-      )
+      if (confirm("Simpan transaksi ini ?")) {
+        this.purchasingService.saveTransaction(purch).subscribe(
+          data => {
+            alert(data);
+            this.resetForm();
+          },
+          error => {
+            alert(error);
+          }
+        )
+      }
     } else {
       alert("Mohon lengkapi form terlebih dahulu");
     }
   }
 
-  addMaterial() {
+  addMaterial(materialId) {
     let rows = this.purchasingForm.get("purchasing_details") as FormArray;
-    if (rows.length < this.list_material.length) {
-      var material = new Material();
+    let is_exist = false;
+
+    for (var i = 0; i < rows.length; i++) {
+      let form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[i];
+      let mat = form.get("material").value;
+      if (mat.materialId == materialId) {
+        is_exist = true;
+        break;
+      }
+    }
+
+    if (!is_exist) {
 
 
-      var row = this.fb.group({
-        quantity: 0,
-        price: 0,
-        total: 0,
-        material: this.fb.group(material)
-      });
+      let purchasing_detail = new PurchasingDetail();
+      let material = new Material();
+      material = this.list_material.find(x => x.materialId == materialId);
+      purchasing_detail.material = material;
 
-      (this.purchasingForm.get("purchasing_details") as FormArray).push(row);
+      let detail = this.fb.group(purchasing_detail);
+
+
+      rows.push(detail);
+      
       this.calculateSubTotal();
     } else {
-      alert("Tidak ada material yang tersedia");
+      alert("Material sudah dipilih");
     }
 
   }
 
+  onModalShow(){
+    this.filterListMaterial();
+  }
+
+  filterListMaterial(){
+    let rows = this.purchasingForm.get("purchasing_details") as FormArray;
+    for (var i = 0; i < this.list_material.length; i++) {
+      var material = this.list_material[i];
+      var matExist = rows.value.find(x => x.material.materialId == material.materialId);
+      if (matExist) {
+        this.list_material[i].deleted = true;
+        // var temp_list = this.list_material.filter(x => x.materialId !== matExist.material.materialId);
+        // this.list_material = [];
+        // this.list_material = temp_list;
+      } else {
+        this.list_material[i].deleted = false;
+      }
+    }
+  }
+
   deleteMaterial(index) {
     if (confirm("Apakah Anda yakin akan menghapus baris " + (index + 1))) {
+      // var form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[index];
+      // var material = form.get("material").value;
+      // this.list_material.push(material);
       (this.purchasingForm.get("purchasing_details") as FormArray).removeAt(index);
       this.calculateSubTotal();
     }
   }
 
+  searchMaterial(searchValue){
+    this.search = searchValue;
+    this.getMaterial();
+  }
+
+
   getMaterial() {
     this.list_material = [];
-    this.materialService.getMaterialParent().subscribe(
+
+    this.materialService.getMaterialParent(this.currentMaterialPage.value, this.search).subscribe(
       data => {
-        this.list_material = data;
-        // this.list_material = list.filter(x => x.details.length > 0);
-        // console.log(this.list_material);
+        this.list_material = data.content;
+        this.totalMaterials = data.totalElements;
+
+        this.filterListMaterial();
+
+      },
+      error => {
+        alert(error);
       }
     )
+  }
+
+  chooseMaterial(value){
+    this.addMaterial(value);
+    this.filterListMaterial();
   }
 
   loadDetail(index, value) {
@@ -164,6 +240,7 @@ export class PurchasingComponent implements OnInit {
 
   calculateTotal(index) {
     var form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[index];
+    console.log(form);
     var quantity = form.get("quantity").value;
     var price = form.get("price").value;
     var total = quantity * price;
@@ -203,6 +280,11 @@ export class PurchasingComponent implements OnInit {
     while (row != null && row.length != 0) {
       (this.purchasingForm.get("purchasing_details") as FormArray).removeAt(0);
     }
+  }
+
+  pageChanged(event: any): void {
+    this.currentMaterialPage.setValue(event.page);
+    this.getMaterial();
   }
 
 

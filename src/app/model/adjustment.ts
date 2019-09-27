@@ -1,5 +1,4 @@
 import { User } from './user';
-import { Supplier } from './supplier';
 import { AdjustmentDetail } from './adjustment-detail';
 
 export class Adjustment {

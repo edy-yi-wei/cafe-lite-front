@@ -13,6 +13,8 @@ import { InvoiceReportComponent } from './invoice-report.component';
 import { CashierReportComponent } from './cashier-report.component';
 import { SoldMenuReportComponent } from './sold-menu-report.component';
 import { SendMailComponent } from './send-mail.component';
+import { PurchasingReportComponent } from './purchasing-report.component';
+import { AdjustReportComponent } from './adjust-stock-report.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -28,6 +30,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
   ],
   declarations: [
     InvoiceReportComponent,
+    PurchasingReportComponent,
+    AdjustReportComponent,
     CashierReportComponent,
     SoldMenuReportComponent,
     SendMailComponent

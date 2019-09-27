@@ -2,110 +2,179 @@
   <!--HEADER FOR ACTION BUTTONS-->
   <div>
     <button type="button" class="btn btn-secondary" (click)="addNew()"><i class="icon-plus"></i> Baru</button>
-    <button type="button" class="btn btn-primary" (click)="saveTransaction()"><i class="icon-paper-plane"></i>
-      Simpan</button>
   </div>
   <br />
   <form [formGroup]="purchasingForm">
     <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <ng-container formGroupName="purchasing">
+            <ng-container formGroupName="supplier">
               <div class="row">
-                <div class="form-group col-md-8">
-                    <label for="supplier">Supplier</label>
-                    <select class="form-control form-control-sm" formControlName="supplierId">
-                      <option *ngFor="let supp of list_supplier" [value]="supp.supplierId">{{supp.supplierName}}
-                      </option>
-                    </select>
-                  </div>
-              </div>
-              <div class="row">
-                <div class="form-group col-md-8">
-                  <label for="amount">Subtotal</label>
-                <br>
-                  {{purchasingForm.controls.purchasing.controls.amount.value | number: ''}}
+                <div class="form-group col-md-4">
+                  <label for="supplier">Supplier</label>
+                  <select class="form-control form-control-sm" formControlName="supplierId"
+                    (change)="loadSupplier($event.target.value)">
+                    <option *ngFor="let supp of list_supplier" [value]="supp.supplierId">{{supp.supplierName}}
+                    </option>
+                  </select>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-8">
-                  <label for="discount">Discount (%)</label>
-                  <input type="text" mask="0{3}" formControlName="discount" (change)="calculateNetto()" class="form-control form-control-sm"
-                    placeholder="0">
+                <div class="form-group col-md-4">
+                  <label for="address">Alamat</label>
+                  <textarea cols="5" rows="5" formControlName="address" class="form-control form-control-sm"></textarea>
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-8">
-                  <label for="netto">Total</label>
-              <br>
-              {{purchasingForm.controls.purchasing.controls.netto.value | number: ''}}
+                <div class="form-group col-md-4">
+                  <label for="phone">No. Telpon</label>
+                  <input type="text" formControlName="phone" class="form-control form-control-sm">
                 </div>
               </div>
             </ng-container>
           </div>
         </div>
       </div>
-      <div class="col-md-9">
+      <!--/.col-->
+    </div>
+    <!--/.row-->
+    <div class="row">
+      <div class="col-md-12">
         <div class="card">
           <div class="card-body">
-            <button type="button" class="btn btn-primary btn-sm" (click)="addMaterial()" style="margin-bottom: 10px;"><i
-                class="icon-plus"></i> Add</button>
-            <div class="table-responsive">
+            <button type="button" class="btn btn-primary btn-sm" (click)="materialModal.show()"
+              style="margin-bottom: 10px;"><i class="icon-plus"></i> Add</button>
+            <table class="table table-striped form-control-sm">
+              <thead>
+                <tr class="d-flex">
+                  <th class="col-md-1 text-left"></th>
+                  <th class="col-md-4 text-left">Nama Material</th>
+                  <th class="col-md-2 text-left">UoM</th>
+                  <th class="col-md-1 text-right">Qty</th>
+                  <th class="col-md-2 text-right">Harga Satuan</th>
+                  <th class="col-md-2 text-right">Jumlah Harga</th>
+                </tr>
+              </thead>
+            </table>
+            <div class="table-responsive" style="height:300px;overflow-y: auto">
               <table class="table table-striped form-control-sm">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Nama Material</th>
-                    <th>Kode Material</th>
-                    <th>UoM</th>
-                    <th>Quantity</th>
-                    <th>Harga</th>
-                    <th>Jumlah</th>
-                  </tr>
-                </thead>
-                <tbody style="overflow-y: auto">
-                  <tr formArrayName="purchasing_details" *ngFor="let md of purchasingForm.get('purchasing_details').controls; let i = index">
-                      <td><button class="btn btn-ghost-danger btn-sm" (click)="deleteMaterial(i)"><i class="icon-trash"></i></button>
-                      </td>
-                      <ng-container [formGroupName]="i">
-                        <ng-container formGroupName="material">
-                        <td>
-                          <select class="form-control form-control-sm" formControlName="materialId"
-                            (change)="loadDetail(i, $event.target.value)">
-                            <option *ngFor="let mat of list_material" [value]="mat.materialId">{{mat.materialName}}
-                            </option>
-                          </select>
+                <tbody>
+                  <tr class="d-flex" formArrayName="purchasing_details"
+                    *ngFor="let md of purchasingForm.get('purchasing_details').controls; let i = index">
+                    <td class="col-md-1 text-left"><button class="btn btn-ghost-danger btn-sm"
+                        (click)="deleteMaterial(i)"><i class="icon-trash"></i></button>
+                    </td>
+                    <ng-container [formGroupName]="i">
+                      <ng-container formGroupName="material">
+                        <td class="col-md-4 text-left">
+                          {{md.value.material.materialName}}
                         </td>
-                        <td>
-                          {{md.value.material.materialCode}}
-                        </td>
-                        <td>
+                        <td class="col-md-2 text-left">
                           {{md.value.material.uom}}
                         </td>
-                        </ng-container>
                       </ng-container>
-                      <td [formGroupName]="i">
-                        <input type="text" mask = "comma_separator.2" formControlName="quantity" (change)="calculateTotal(i)" class="form-control form-control-sm" style="text-align: right;width: 200px"
-                          placeholder="0">
-                      </td>
-                      <td [formGroupName]="i">
-                        <input type="text" mask = "comma_separator.2" formControlName="price" (change)="calculateTotal(i)" class="form-control form-control-sm" style="text-align: right;width: 200px"
-                          placeholder="0">
-                      </td>
-                      <td [formGroupName]="i" align="right">
-                        {{md.value.total | number: ''}}
-                      </td>
+                    </ng-container>
+                    <td [formGroupName]="i" class="col-md-1">
+                      <input type="text" mask="comma_separator.2" formControlName="quantity"
+                        (change)="calculateTotal(i)" class="form-control form-control-sm text-right" placeholder="0">
+                    </td>
+                    <td [formGroupName]="i" class="col-md-2">
+                      <input type="text" mask="comma_separator.2" formControlName="price" (change)="calculateTotal(i)"
+                        class="form-control form-control-sm text-right" placeholder="0">
+                    </td>
+                    <td [formGroupName]="i" class="col-md-2 text-right">
+                      <b>{{md.value.total | number: ''}}</b>
+                    </td>
                   </tr>
                 </tbody>
               </table>
             </div>
-      
+            <ng-container formGroupName="purchasing">
+            <table class="table">
+              <tfoot>
+                <tr class="d-flex">
+                  <th colspan="3" class="col-md-10 text-right"><b>Discount (%)</b></th>
+                  <th colspan="1" class="col-md-1"></th>
+                  <th  class="text-right col-md-1"><input type="text" mask="0{3}" formControlName="discount" (change)="calculateNetto()"
+                    class="form-control form-control-sm text-right" placeholder="0"></th>
+                </tr>
+                <tr class="d-flex">
+                  <th colspan="4" class="text-right col-md-10"><b>Subtotal</b></th>
+                  <th class="text-right col-md-2"><b>{{purchasingForm.controls.purchasing.controls.amount.value | number: ''}}</b></th>
+                </tr>
+                <tr class="d-flex">
+                  <th colspan="4" class="text-right col-md-10"><b>Discount</b></th>
+                  <th class="text-right col-md-2"><b> - ({{purchasingForm.controls.purchasing.controls.amount.value - purchasingForm.controls.purchasing.controls.netto.value | number: ''}})</b></th>
+                </tr>
+                <tr class="d-flex">
+                  <th colspan="4" class="text-right col-md-10"><b>Total</b></th>
+                  <th class="text-right col-md-2"><b>{{purchasingForm.controls.purchasing.controls.netto.value | number: ''}}</b></th>
+                </tr>
+              </tfoot>
+            </table>
+            </ng-container>
+            <button type="button" class="btn btn-primary pull-right" (click)="saveTransaction()"><i class="icon-paper-plane"></i>
+              Simpan</button>
+
           </div>
         </div>
       </div>
-      <!--/.col-->
     </div>
-    <!--/.row-->
   </form>
 </div>
+
+<div bsModal #materialModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true" (onShow)="onModalShow()">
+  <div class="modal-dialog modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">List Material</h4>
+        <button type="button" class="close" (click)="materialModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <input type="text" #searchBox (keyup.enter)="searchMaterial(searchBox.value)"
+            class="form-control form-control-sm" placeholder="Cari berdasarkan kode material atau nama material">
+          <span class="input-group-append">
+            <button class="btn btn-secondary btn-sm" type="button" (click)="searchMaterial(searchBox.value)"><i
+                class="icon-magnifier"></i></button>
+          </span>
+        </div>
+        <br />
+        <table class="table table-striped form-control-sm">
+          <thead>
+            <tr class="d-flex">
+              <th class="col-md-1 text-left"></th>
+              <th class="col-md-3 text-left">Kode Material</th>
+              <th class="col-md-5 text-left">Nama Material</th>
+              <th class="col-md-3 text-left">UoM</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="table-responsive" style="height:300px;overflow-y: auto">
+          <table class="table table-striped form-control-sm">
+            <tbody>
+              <tr class="d-flex" *ngFor="let m of list_material">
+                <td class="col-md-1 text-left"><button [hidden]="m.deleted" class="btn btn-ghost-success btn-sm"
+                    (click)="chooseMaterial(m.materialId)"><i class="icon-check"></i></button></td>
+                <td class="col-md-3 text-left">{{m.materialCode}}</td>
+                <td class="col-md-5 text-left">{{m.materialName}}</td>
+                <td class="col-md-3 text-left">{{m.uom}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalMaterials"
+          [formControl]="currentMaterialPage" (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4"
+          previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+      </div>
+      <div class="modal-footer">
+        <button #closeButton type="button" class="btn btn-primary" (click)="materialModal.hide()">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

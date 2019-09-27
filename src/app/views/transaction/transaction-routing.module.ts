@@ -33,6 +33,13 @@ const routes: Routes = [
           title: 'Penyesuaian'
         }
       }
+      , {
+        path: 'adjustment',
+        component: AdjustmentComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Penyesuaian Stock'
+        }
+      }
     ]
   }
 ];

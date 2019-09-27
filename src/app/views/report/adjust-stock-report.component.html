@@ -1,0 +1,83 @@
+<div class="animated fadeIn">
+  <!--HEADER FOR ACTION BUTTONS-->
+  <div class="row" [formGroup]="reportForm">
+    <div class="col-md-1">
+      <label>Periode</label>
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate"
+        class="form-control form-control-sm" id="start-date">
+    </div>
+    <div class="col-md-2">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm"
+        id="end-date">
+    </div>
+    <div class="col-md-6">
+      <button type="button" class="btn btn-secondary" (click)="generateReport()"><i class="icon-doc"></i>
+        Tampil</button>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h2>Laporan Penyesuaian Stok</h2>
+        </div>
+        <div class="card-body">
+        <ng-container *ngFor="let p of adjustments">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-body">
+                  <div class="col-md-8">
+                    <table style="width: 100%;border-spacing: 0;">
+                      <tbody>
+                        <tr>
+                          <td><b>Nomor Transaksi</b></td>
+                          <td>:</td>
+                          <td>{{p.adjustmentNumber}}</td>
+                        </tr>
+                        <tr>
+                          <td><b>Tanggal</b></td>
+                          <td>:</td>
+                          <td>{{p.adjustmentDate | date : 'dd MMM yyyy HH:mm:ss'}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <table class="table table-striped table-bordered form-control-sm">
+                    <thead>
+                      <tr>
+                        <th>Nama Material</th>
+                        <th>UoM</th>
+                        <th>Jumlah</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let det of p.details">
+                        <tr>
+                          <td>{{det.material.materialName}}</td>
+                          <td>{{det.material.uom}}</td>
+                          <td>{{det.quantity}}</td>
+                        </tr>
+                      </ng-container>        
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+          <div *ngIf="adjustments.length > 0">
+              <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage"
+                (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4" previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;"></pagination>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>
