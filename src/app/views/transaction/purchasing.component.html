@@ -52,8 +52,8 @@
                   <th class="col-md-4 text-left">Nama Material</th>
                   <th class="col-md-2 text-left">UoM</th>
                   <th class="col-md-1 text-right">Qty</th>
-                  <th class="col-md-2 text-right">Harga</th>
-                  <th class="col-md-2 text-right">Jumlah</th>
+                  <th class="col-md-2 text-right">Harga Satuan</th>
+                  <th class="col-md-2 text-right">Jumlah Harga</th>
                 </tr>
               </thead>
             </table>
@@ -92,26 +92,26 @@
             </div>
             <ng-container formGroupName="purchasing">
             <table class="table">
-              <tbody>
+              <tfoot>
                 <tr class="d-flex">
-                  <td colspan="3" class="col-md-10 text-right"><b>Discount (%)</b></td>
-                  <td colspan="1" class="col-md-1"></td>
-                  <td  class="text-right col-md-1"><input type="text" mask="0{3}" formControlName="discount" (change)="calculateNetto()"
-                    class="form-control form-control-sm text-right" placeholder="0"></td>
+                  <th colspan="3" class="col-md-10 text-right"><b>Discount (%)</b></th>
+                  <th colspan="1" class="col-md-1"></th>
+                  <th  class="text-right col-md-1"><input type="text" mask="0{3}" formControlName="discount" (change)="calculateNetto()"
+                    class="form-control form-control-sm text-right" placeholder="0"></th>
                 </tr>
                 <tr class="d-flex">
-                  <td colspan="4" class="text-right col-md-10"><b>Subtotal</b></td>
-                  <td class="text-right col-md-2"><b>{{purchasingForm.controls.purchasing.controls.amount.value | number: ''}}</b></td>
+                  <th colspan="4" class="text-right col-md-10"><b>Subtotal</b></th>
+                  <th class="text-right col-md-2"><b>{{purchasingForm.controls.purchasing.controls.amount.value | number: ''}}</b></th>
                 </tr>
                 <tr class="d-flex">
-                  <td colspan="4" class="text-right col-md-10"><b>Discount</b></td>
-                  <td class="text-right col-md-2"><b> - ({{purchasingForm.controls.purchasing.controls.amount.value - purchasingForm.controls.purchasing.controls.netto.value | number: ''}})</b></td>
+                  <th colspan="4" class="text-right col-md-10"><b>Discount</b></th>
+                  <th class="text-right col-md-2"><b> - ({{purchasingForm.controls.purchasing.controls.amount.value - purchasingForm.controls.purchasing.controls.netto.value | number: ''}})</b></th>
                 </tr>
                 <tr class="d-flex">
-                  <td colspan="4" class="text-right col-md-10"><b>Total</b></td>
-                  <td class="text-right col-md-2"><b>{{purchasingForm.controls.purchasing.controls.netto.value | number: ''}}</b></td>
+                  <th colspan="4" class="text-right col-md-10"><b>Total</b></th>
+                  <th class="text-right col-md-2"><b>{{purchasingForm.controls.purchasing.controls.netto.value | number: ''}}</b></th>
                 </tr>
-              </tbody>
+              </tfoot>
             </table>
             </ng-container>
             <button type="button" class="btn btn-primary pull-right" (click)="saveTransaction()"><i class="icon-paper-plane"></i>

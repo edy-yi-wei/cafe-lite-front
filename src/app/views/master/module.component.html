@@ -16,7 +16,7 @@
               <div class="input-group">
                 <input type="text" #searchBox (keyup.enter)="onSearchEnter(searchBox.value)" class="form-control form-control-sm" placeholder="Cari berdasarkan nama business unit">
                 <span class="input-group-append">
-                  <button class="btn btn-secondary btn-sm" type="button" (click)="selectModule()"><i class="icon-magnifier"></i></button>
+                  <button class="btn btn-secondary btn-sm" type="button" (click)="onSearchEnter(searchBox.value)"><i class="icon-magnifier"></i></button>
                 </span>
               </div>
               <br/>

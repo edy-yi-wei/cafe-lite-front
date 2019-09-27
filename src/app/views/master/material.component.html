@@ -19,7 +19,7 @@
                         <input type="text" #searchBox (keyup.enter)="onSearchEnter(searchBox.value)"
                             class="form-control form-control-sm" placeholder="Cari berdasarkan nama Material">
                         <span class="input-group-append">
-                            <button class="btn btn-secondary btn-sm" type="button" (click)="selectMaterial()"><i
+                            <button class="btn btn-secondary btn-sm" type="button" (click)="onSearchEnter(searchBox.value)"><i
                                     class="icon-magnifier"></i></button>
                         </span>
                     </div>
@@ -159,12 +159,12 @@
             </div>
             <div class="modal-body">
                 <div class="input-group">
-                    <input type="text" #searchBox (keyup.enter)="searchMaterial(searchBox.value)"
+                    <input type="text" #searchBoxMaterial (keyup.enter)="searchMaterial(searchBoxMaterial.value)"
                         class="form-control form-control-sm"
                         placeholder="Cari berdasarkan kode material atau nama material">
                     <span class="input-group-append">
                         <button class="btn btn-secondary btn-sm" type="button"
-                            (click)="searchMaterial(searchBox.value)"><i class="icon-magnifier"></i></button>
+                            (click)="searchMaterial(searchBoxMaterial.value)"><i class="icon-magnifier"></i></button>
                     </span>
                 </div>
                 <br />

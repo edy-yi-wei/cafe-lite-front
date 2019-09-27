@@ -5,6 +5,8 @@ import { CashierReportComponent } from './cashier-report.component';
 import { SoldMenuReportComponent } from './sold-menu-report.component';
 import { RouterGuard } from '../../service/router-guard';
 import { SendMailComponent } from './send-mail.component';
+import { PurchasingReportComponent } from './purchasing-report.component';
+import { AdjustReportComponent } from './adjust-stock-report.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,20 @@ const routes: Routes = [
         component: InvoiceReportComponent, canActivate: [RouterGuard],
         data: {
           title: 'Penjualan'
+        }
+      },
+      {
+        path: 'pembelian',
+        component: PurchasingReportComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Pembelian'
+        }
+      },
+      {
+        path: 'adjust-stock',
+        component: AdjustReportComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Penyesuaian Stok'
         }
       },
       {

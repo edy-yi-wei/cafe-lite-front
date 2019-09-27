@@ -19,7 +19,8 @@ export class MaterialComponent implements OnInit {
     search: string = '';
     selectedMaterial: Material;
     // selectedValues: number[] = [];
-
+    
+    search_material: string = '';
     list_material: Material[] = [];
     currentMaterialPage = new FormControl(1);
     totalMaterials: number = 1;
@@ -224,7 +225,7 @@ export class MaterialComponent implements OnInit {
 
 
     searchMaterial(searchValue) {
-        this.search = searchValue;
+        this.search_material = searchValue;
         this.getMaterial();
     }
 
@@ -232,7 +233,7 @@ export class MaterialComponent implements OnInit {
     getMaterial() {
         this.list_material = [];
 
-        this.materialService.selectStock(this.currentMaterialPage.value, this.search).subscribe(
+        this.materialService.selectStock(this.currentMaterialPage.value, this.search_material).subscribe(
             data => {
                 this.list_material = data.content;
                 this.totalMaterials = data.totalElements;

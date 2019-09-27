@@ -240,6 +240,7 @@ export class PurchasingComponent implements OnInit {
 
   calculateTotal(index) {
     var form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[index];
+    console.log(form);
     var quantity = form.get("quantity").value;
     var price = form.get("price").value;
     var total = quantity * price;

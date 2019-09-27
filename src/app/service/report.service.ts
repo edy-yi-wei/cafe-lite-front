@@ -63,6 +63,22 @@ export class ReportService {
     )
   }
 
+  selectPurchasing(startDate, endDate, page): Observable<any> {
+    this.createHeaders();
+    return this.http.get(this.apiURL + '/report/purchasings?startDate=' + startDate + '&endDate=' + endDate + '&page=' + page, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  selectAdjustment(startDate, endDate, page): Observable<any> {
+    this.createHeaders();
+    return this.http.get(this.apiURL + '/report/adjustments?startDate=' + startDate + '&endDate=' + endDate + '&page=' + page, this.httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   handleError(error) {
      let errorMessage = '';
      if(error.error instanceof ErrorEvent) {
