@@ -25,6 +25,13 @@ const routes: Routes = [
         data: {
           title: 'Pembelian'
         }
+      },
+      {
+        path: 'adjustment',
+        component: AdjustmentComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'Penyesuaian'
+        }
       }
       , {
         path: 'adjustment',
