@@ -5,12 +5,12 @@
       <label>Periode</label>
     </div>
     <div class="col-md-2">
-      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate"
-        class="form-control form-control-sm" id="start-date">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate" class="form-control form-control-sm"
+        id="start-date" autocomplete="off">
     </div>
     <div class="col-md-2">
       <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm"
-        id="end-date">
+        id="end-date" autocomplete="off">
     </div>
     <div class="col-md-6">
       <button type="button" class="btn btn-secondary" (click)="generateReport()"><i class="icon-doc"></i>
@@ -43,27 +43,37 @@
                           <td>:</td>
                           <td>{{p.adjustmentDate | date : 'dd MMM yyyy HH:mm:ss'}}</td>
                         </tr>
+                        <tr>
+                          <td><b>Dibuat oleh</b></td>
+                          <td>:</td>
+                          <td>{{p.user.userName}}</td>
+                        </tr>
                       </tbody>
                     </table>
                   </div>
-                  <table class="table table-striped table-bordered form-control-sm">
-                    <thead>
-                      <tr>
-                        <th>Nama Material</th>
-                        <th>UoM</th>
-                        <th>Jumlah</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <ng-container *ngFor="let det of p.details">
+                  <div class="col-md-12">
+                    <table class="table table-striped table-bordered form-control-sm">
+                      <thead>
                         <tr>
-                          <td>{{det.material.materialName}}</td>
-                          <td>{{det.material.uom}}</td>
-                          <td>{{det.quantity}}</td>
+                          <th>Nama Material</th>
+                          <th>UoM</th>
+                          <th>Jumlah</th>
+                          <th>Notes</th>
                         </tr>
-                      </ng-container>        
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        <ng-container *ngFor="let det of p.details">
+                          <tr>
+                            <td>{{det.material.materialName}}</td>
+                            <td>{{det.material.uom}}</td>
+                            <td>{{det.quantity}}</td>
+                            <td>{{det.notes}}</td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                    </table>
+                  </div>
+                  
                 </div>
               </div>
             </div>

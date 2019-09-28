@@ -5,10 +5,10 @@
         <label>Periode</label>
     </div>
     <div class="col-md-2">
-      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate" class="form-control form-control-sm" id="start-date">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate" class="form-control form-control-sm" id="start-date" autocomplete="off">
     </div>
     <div class="col-md-2">
-      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm" id="end-date">
+      <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm" id="end-date" autocomplete="off">
     </div>
     <div class="col-md-6">
       <button type="button" class="btn btn-secondary" (click)="selectSession()"><i class="icon-doc"></i> Tampil</button>

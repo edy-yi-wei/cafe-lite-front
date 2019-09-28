@@ -6,11 +6,11 @@
     </div>
     <div class="col-md-2">
       <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="startDate"
-        class="form-control form-control-sm" id="start-date">
+        class="form-control form-control-sm" id="start-date" autocomplete="off">
     </div>
     <div class="col-md-2">
       <input type="text" #dp="bsDatepicker" bsDatepicker formControlName="endDate" class="form-control form-control-sm"
-        id="end-date">
+        id="end-date" autocomplete="off">
     </div>
     <div class="col-md-6">
       <button type="button" class="btn btn-secondary" (click)="generateReport()"><i class="icon-doc"></i>
@@ -56,54 +56,61 @@
                             <td colspan="2"></td>
                             <td>{{p.supplier.phone}}</td>
                           </tr>
+                          <tr>
+                            <td><b>Dibuat oleh</b></td>
+                            <td>:</td>
+                            <td>{{p.user.userName}}</td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
-                    <table class="table table-striped table-bordered form-control-sm">
-                      <thead>
-                        <tr>
-                          <th>Nama Material</th>
-                          <th>UoM</th>
-                          <th>Jumlah</th>
-                          <th class="text-right">Harga Satuan</th>
-                          <th class="text-right">Jumlah Harga</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container *ngFor="let det of p.details">
+                    <div class="col-md-12">
+                      <table class="table table-striped table-bordered form-control-sm">
+                        <thead>
                           <tr>
-                            <td>{{det.material.materialName}}</td>
-                            <td>{{det.material.uom}}</td>
-                            <td>{{det.quantity}}</td>
-                            <td class="text-right">{{det.price | number: ''}}</td>
-                            <td class="text-right">{{det.quantity * det.price | number: ''}}</td>
+                            <th>Nama Material</th>
+                            <th>UoM</th>
+                            <th>Jumlah</th>
+                            <th class="text-right">Harga Satuan</th>
+                            <th class="text-right">Jumlah Harga</th>
                           </tr>
-                        </ng-container>
-                        
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th rowspan="4" colspan="3"></th>
-                          <th class="text-right"><b>Subtotal</b></th>
-                          <th class="text-right"><b>{{p.amount | number: ''}}</b></th>
-                        </tr>
-                        <tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let det of p.details">
+                            <tr>
+                              <td>{{det.material.materialName}}</td>
+                              <td>{{det.material.uom}}</td>
+                              <td>{{det.quantity}}</td>
+                              <td class="text-right">{{det.price | number: ''}}</td>
+                              <td class="text-right">{{det.quantity * det.price | number: ''}}</td>
+                            </tr>
+                          </ng-container>
 
-                          <th class="text-right"><b>Discount</b></th>
-                          <th class="text-right"><b>{{p.discount}}%</b></th>
-                        </tr>
-                        <tr>
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th rowspan="4" colspan="3"></th>
+                            <th class="text-right"><b>Subtotal</b></th>
+                            <th class="text-right"><b>{{p.amount | number: ''}}</b></th>
+                          </tr>
+                          <tr>
 
-                          <th></th>
-                          <th class="text-right"><b>- ({{p.amount - p.netto | number: ''}})</b></th>
-                        </tr>
-                        <tr>
+                            <th class="text-right"><b>Discount</b></th>
+                            <th class="text-right"><b>{{p.discount}}%</b></th>
+                          </tr>
+                          <tr>
 
-                          <th class="text-right"><b>Total</b></th>
-                          <th class="text-right"><b>{{p.netto | number: ''}}</b></th>
-                        </tr>
-                      </tfoot>
-                    </table>
+                            <th></th>
+                            <th class="text-right"><b>- ({{p.amount - p.netto | number: ''}})</b></th>
+                          </tr>
+                          <tr>
+
+                            <th class="text-right"><b>Total</b></th>
+                            <th class="text-right"><b>{{p.netto | number: ''}}</b></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -111,11 +118,11 @@
           </ng-container>
 
           <div *ngIf="purchasings.length > 0">
-              <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage"
-                (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4" previousText="&lsaquo;" nextText="&rsaquo;"
-                firstText="&laquo;" lastText="&raquo;"></pagination>
+            <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage"
+              (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4" previousText="&lsaquo;"
+              nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
           </div>
-         
+
         </div>
       </div>
     </div>
