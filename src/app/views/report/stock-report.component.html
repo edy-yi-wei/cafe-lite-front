@@ -1,0 +1,43 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h2>Laporan Stok</h2>
+        </div>
+        <div class="card-body">
+        <div class="col-md-12">
+          <table class="table table-striped form-control-sm">
+            <thead>
+              <tr>
+                <th>Kode Material</th>
+                <th>Nama Material</th>
+                <th>UoM</th>
+                <th>Jumlah</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let m of stocks">
+              <tr>
+                <td>{{m.materialCode}}</td>
+                <td>{{m.materialName}}</td>
+                <td>{{m.uom}}</td>
+                <td>{{m.quantity}}</td>
+              </tr>
+              </ng-container>
+            </tbody>
+            </table>
+          </div>
+       
+
+          <div *ngIf="stocks.length > 0">
+              <pagination [boundaryLinks]="true" [rotate]="false" [totalItems]="totalItems" [formControl]="currentPage"
+                (pageChanged)="pageChanged($event)" class="pagination-sm" [maxSize]="4" previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;"></pagination>
+          </div>
+         
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+  </div>

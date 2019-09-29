@@ -7,6 +7,7 @@ import { RouterGuard } from '../../service/router-guard';
 import { SendMailComponent } from './send-mail.component';
 import { PurchasingReportComponent } from './purchasing-report.component';
 import { AdjustReportComponent } from './adjust-stock-report.component';
+import { StockReportComponent } from './stock-report.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,7 @@ const routes: Routes = [
     data: {
       title: 'Report'
     },
-    children: [      
+    children: [     
       {
         path: 'penjualan',
         component: InvoiceReportComponent, canActivate: [RouterGuard],
@@ -55,6 +56,13 @@ const routes: Routes = [
         component: SendMailComponent, canActivate: [RouterGuard],
         data: {
           title: 'Kirim Laporan'
+        }
+      },
+      {
+        path: 'stock',
+        component: StockReportComponent, canActivate: [RouterGuard],
+        data: {
+          title: 'stok'
         }
       }
     ]

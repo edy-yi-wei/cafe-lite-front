@@ -15,6 +15,7 @@ import { SoldMenuReportComponent } from './sold-menu-report.component';
 import { SendMailComponent } from './send-mail.component';
 import { PurchasingReportComponent } from './purchasing-report.component';
 import { AdjustReportComponent } from './adjust-stock-report.component';
+import { StockReportComponent } from './stock-report.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
@@ -34,7 +35,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
     AdjustReportComponent,
     CashierReportComponent,
     SoldMenuReportComponent,
-    SendMailComponent
+    SendMailComponent,
+    StockReportComponent
   ]
 })
 export class ReportModule { }
