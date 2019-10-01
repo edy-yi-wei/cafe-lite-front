@@ -78,6 +78,8 @@ export class PurchasingComponent implements OnInit {
   resetForm() {
     this.purchasingForm.reset();
     var formHeader = this.purchasingForm.get("purchasing").value;
+    formHeader.purchasingId = 0;
+    formHeader.purchasingNumber = "";
     formHeader.amount = 0;
     formHeader.netto = 0;
     this.purchasingForm.get("purchasing").setValue(formHeader);
@@ -122,9 +124,11 @@ export class PurchasingComponent implements OnInit {
     }
 
 
+    console.log(purchasing);
+
     if (purchasing.supplier.supplierId && purchasing.details.length > 0 && allowed) {
       if (confirm("Simpan transaksi ini ?")) {
-        this.purchasingService.saveTransaction(purch).subscribe(
+        this.purchasingService.saveTransaction(purchasing).subscribe(
           data => {
             alert(data);
             this.resetForm();
@@ -240,7 +244,6 @@ export class PurchasingComponent implements OnInit {
 
   calculateTotal(index) {
     var form = (this.purchasingForm.get("purchasing_details") as FormArray).controls[index];
-    console.log(form);
     var quantity = form.get("quantity").value;
     var price = form.get("price").value;
     var total = quantity * price;

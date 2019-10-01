@@ -77,7 +77,7 @@ export class AdjustmentComponent implements OnInit {
 
     if (adjustment.details.length > 0 && allowed) {
       if (confirm("Simpan transaksi ini ?")) {
-        this.adjustmentService.saveTransaction(adjust).subscribe(
+        this.adjustmentService.saveTransaction(adjustment).subscribe(
           data => {
             alert(data);
             this.resetForm();
